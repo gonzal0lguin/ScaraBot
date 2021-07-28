@@ -1,15 +1,14 @@
 # This is a minmax implementation for the game tic tac toe.
-import sys
-from python_codes.grid import *
 
-bot = Tac()
+import sys
+from python_codes.minimax import *
 
 while True:
-    for event in py.event.get():
-        if event.type == py.QUIT:
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
             sys.exit()
 
-        if event.type == py.MOUSEBUTTONDOWN and not bot.game_over:
+        if event.type == pg.MOUSEBUTTONDOWN and not bot.game_over:
             pos = (event.pos[1] // SQ_WIDTH, event.pos[0] // SQ_HEIGHT)
 
             if bot.player == 2:
@@ -18,21 +17,23 @@ while True:
                     bot.draw_player_fig(pos)
                     if bot.check_win(pos):
                         bot.game_over = True
-                        break # para que no siga jugando el bot
+                        break  # so that the computer doesnt keep playing
 
                     bot.update_player()
 
             if bot.player == 1:
-                bot.random_computer_move()
+                # bot.random_computer_move()
+                bot.aiPos = best_move()
+                bot.update_board(bot.aiPos)
+                bot.draw_player_fig(bot.aiPos)
+
                 if bot.check_win(bot.aiPos):
                     bot.game_over = True
 
                 bot.update_player()
 
-            #bot.update_player()
-
-        if event.type == py.KEYDOWN:
-            if event.key == py.K_r:
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_r:  # press r key to restart game
                 bot.__init__()  # restart the game
 
-    py.display.update()
+    pg.display.update()
