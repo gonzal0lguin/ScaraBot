@@ -10,6 +10,8 @@ y increase
 
 import numpy as np
 import pygame as py
+from python_codes.minimax import *
+
 
 # global constants
 HEIGHT = 600
@@ -37,9 +39,12 @@ class Tac(object):
         self.screen = py.display.set_mode((WIDTH, HEIGHT))
         self.board = np.zeros((3, 3)).astype(int)
         self.player = 1
-        self.screen.fill(BGFILL)
+        self.aiPos = (0, 0)
+        self.humanPos = (0, 0)
         self.playerCol = p1COLOR
         self.game_over = False
+
+        self.screen.fill(BGFILL)
 
         py.display.set_caption('GATOBOT')
         # draw lines
@@ -47,6 +52,9 @@ class Tac(object):
         for i in range(1, 3):
             py.draw.line(self.screen, lineColor, (WIDTH / 3 * i, 0), (WIDTH / 3 * i, HEIGHT), lineWidth)
             py.draw.line(self.screen, lineColor, (0, HEIGHT / 3 * i), (WIDTH, HEIGHT / 3 * i), lineWidth)
+
+        self.random_computer_move()
+        self.update_player()
 
     def is_spot_available(self, pos):
         return self.board[pos] == 0
@@ -120,3 +128,17 @@ class Tac(object):
             return True
 
         return False
+
+
+    def random_computer_move(self):
+        rand_pos = (np.random.randint(0, 3), np.random.randint(0, 3))
+
+        if self.is_spot_available(rand_pos):
+            self.aiPos = rand_pos
+            self.update_board(rand_pos)
+            self.draw_player_fig(rand_pos)
+            print(rand_pos)
+
+        else:
+            self.random_computer_move()
+
