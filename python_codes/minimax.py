@@ -1,17 +1,19 @@
-from python_codes.grid import *
+#from python_codes.grid import *
+from python_codes.superCatGrid import *
 
-bot = Tac()
+bot = SuperCat('two player') #Tac()
 
 scores = {1: 1, 2: -1, 'tie': 0}
-
+ROWS = 3
+COLUMNS = 7
 
 def best_move():
     bestPos = (0, 0)
     bestScore = -np.infty
 
     # check all thte possible spots to take a move
-    for i in range(3):
-        for j in range(3):
+    for i in range(ROWS):
+        for j in range(COLUMNS):
             if bot.is_spot_available((i, j)):
                 bot.board[i, j] = 1  # ai player
                 score = minimax(bot.board, 0, False)
@@ -27,7 +29,7 @@ def best_move():
 def minimax(board, depth, isMaximizing):
     # base case: terminal state ie.- win / lose / tie (for maximizing player)
     # return 1
-    ending = bot.check_end_game()
+    ending = bot.check_win()
 
     if ending != None:  # caso base, se llega al final del juego
         return scores[ending]
@@ -38,8 +40,8 @@ def minimax(board, depth, isMaximizing):
     if isMaximizing:
         maxEval = -np.infty
 
-        for i in range(3):
-            for j in range(3):
+        for i in range(ROWS):
+            for j in range(COLUMNS):
                 if bot.is_spot_available((i, j)):
                     board[i, j] = ai
                     eval = minimax(board, depth + 1, False)
@@ -49,8 +51,8 @@ def minimax(board, depth, isMaximizing):
 
     else:
         minEval = np.infty
-        for i in range(3):
-            for j in range(3):
+        for i in range(ROWS):
+            for j in range(COLUMNS):
                 if bot.is_spot_available((i, j)):
                     board[i, j] = human
                     eval = minimax(board, depth + 1, True)

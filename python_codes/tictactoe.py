@@ -1,7 +1,7 @@
 # This is a minmax implementation for the game tic tac toe.
 
 import sys
-from python_codes.minimax import *
+from python_codes.abPruning_minimax import *
 
 while True:
     for event in pg.event.get():

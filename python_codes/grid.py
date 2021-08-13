@@ -11,8 +11,6 @@ y increase
 import numpy as np
 import pygame as pg
 
-# from python_codes.minimax import *
-
 
 # global constants
 HEIGHT = 600
