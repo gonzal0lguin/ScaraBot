@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from python_codes.transformations import *
-
+from time import time_ns
 
 class MK2Robot(object):
     HOME_0 = 0
@@ -13,6 +13,9 @@ class MK2Robot(object):
         self.T = []
         self.pose = []
         self.s = []
+        self.home = (0, 90)  # deg
+        self.home_cartesian = (link_lengths[0], link_lengths[1])
+
         # self.update_pose(MK2Robot.HOME_0, MK2Robot.HOME_1)
 
     def update_pose(self, q0, q1):
@@ -63,16 +66,16 @@ class MK2Robot(object):
         a1 = self.a[0]
         a2 = self.a[1]
         lim = a1 + a2
-        r = np.sqrt(x**2 + y**2)
+        r = np.sqrt(x ** 2 + y ** 2)
 
         if (r > lim):
             return self.q
 
         phi0 = np.arctan2(y, x)
-        phi1 = np.arccos((r**2+a1**2-a2**2) / (2*r*a1))
-        phi2 = np.arccos((a1**2 + a2**2 - r**2) / (2*a1*a2))
+        phi1 = np.arccos((r ** 2 + a1 ** 2 - a2 ** 2) / (2 * r * a1))
+        phi2 = np.arccos((a1 ** 2 + a2 ** 2 - r ** 2) / (2 * a1 * a2))
 
-        q0 = phi0 -phi1
+        q0 = phi0 - phi1
         q1 = np.pi - phi2
 
         return np.array([q0, q1]) * 180 / np.pi
@@ -89,7 +92,7 @@ class MK2Robot(object):
 
         x, y = inputed_coord
         xr, yr = self.pose[:, 1]
-        error_x = np.abs(x-xr)/x
+        error_x = np.abs(x - xr) / x
         error_y = np.abs(y - yr) / y
         return [error_x, error_y]
 
@@ -110,10 +113,15 @@ class MK2Robot(object):
         for i in range(len(coords)):
             x = str(np.round(coords[i][0], 1))
             y = str(np.round(coords[i][1], 1))
-            msg = 'G0 X' + x + ' Y' + y + '\n' # G0 Xx Yy
+            msg = 'G0 X' + x + ' Y' + y + '\n'  # G0 Xx Yy
             arch.write(msg)
 
         arch.close()
 
-
+    def move_linear_sim(self, start, end, speed):
+        xs, ys = start
+        xt, yt = end
+        move_dist = np.sqrt((xs - xt) ** 2 + (ys - yt) ** 2)
+        move_time = move_dist / speed
+        
 

@@ -1,9 +1,9 @@
 #from python_codes.grid import *
 from python_codes.superCatGrid import *
-bot = SuperCat('two players')
+bot = SuperCat('two playes')
 
 scores = {1: 1, 2: -1, 'tie': 0}
-ROWS = 7
+ROWS = 3
 COLUMNS = 3
 
 def best_move():
@@ -28,8 +28,8 @@ def best_move():
 def minimax(board, depth, isMaximizing, alpha=-np.infty, beta=np.infty):
     # base case: terminal state ie.- win / lose / tie (for maximizing player)
     # return 1
-    ending = bot.check_win()
-
+    ending = bot.check_end_game()
+    print(isMaximizing)
     if ending != None:  # caso base, se llega al final del juego
         return scores[ending]
 
@@ -45,7 +45,7 @@ def minimax(board, depth, isMaximizing, alpha=-np.infty, beta=np.infty):
                     eval = minimax(board, depth + 1, False, alpha, beta)
                     board[i, j] = 0
                     maxEval = max(maxEval, eval)
-                    alpha = max(alpha, eval)
+                    alpha = max(alpha, maxEval)
                     if beta <= alpha:
                         break
 
@@ -60,7 +60,7 @@ def minimax(board, depth, isMaximizing, alpha=-np.infty, beta=np.infty):
                     eval = minimax(board, depth + 1, True, alpha, beta)
                     board[i, j] = 0
                     minEval = min(minEval, eval)
-                    beta = min(eval, beta)
+                    beta = min(minEval, beta)
                     if beta <= alpha:
                         break
         return minEval

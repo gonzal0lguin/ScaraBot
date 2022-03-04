@@ -175,3 +175,7 @@ class Tac(object):
 
         else:
             self.random_computer_move()
+
+    def get_winner_coords(self):
+        "return x_start, y_start and x_end, y_end"
+        pass

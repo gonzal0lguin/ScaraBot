@@ -1,39 +1,39 @@
 # This is a minmax implementation for the game tic tac toe.
 
 import sys
-from python_codes.abPruning_minimax import *
+from python_codes.minimax import *
 
 while True:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             sys.exit()
 
-        if event.type == pg.MOUSEBUTTONDOWN and not bot.game_over:
+        if event.type == pg.MOUSEBUTTONDOWN and not game.game_over:
             pos = (event.pos[1] // SQ_WIDTH, event.pos[0] // SQ_HEIGHT)
 
-            if bot.player == 2:
-                if bot.is_spot_available(pos):
-                    bot.update_board(pos)
-                    bot.draw_player_fig(pos)
-                    if bot.check_win(pos):
-                        bot.game_over = True
+            if game.player == 2:
+                if game.is_spot_available(pos):
+                    game.update_board(pos)
+                    game.draw_player_fig(pos)
+                    if game.check_win(pos):
+                        game.game_over = True
                         break  # so that the computer doesnt keep playing
 
-                    bot.update_player()
+                    game.update_player()
 
-            if bot.player == 1:
+            if game.player == 1:
                 # bot.random_computer_move()
-                bot.aiPos = best_move()
-                bot.update_board(bot.aiPos)
-                bot.draw_player_fig(bot.aiPos)
+                game.aiPos = best_move()
+                game.update_board(game.aiPos)
+                game.draw_player_fig(game.aiPos)
 
-                if bot.check_win(bot.aiPos):
-                    bot.game_over = True
+                if game.check_win(game.aiPos):
+                    game.game_over = True
 
-                bot.update_player()
+                game.update_player()
 
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_r:  # press r key to restart game
-                bot.__init__()  # restart the game
+                game.__init__()  # restart the game
 
     pg.display.update()

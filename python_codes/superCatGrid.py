@@ -101,7 +101,7 @@ class SuperCat(object):
             self.player = 1
             self.playerCol = p1COLOR
 
-        print(self.player)
+        #print(self.player)
 
     def draw_x_from_center_point(self, center, l, color, lineWidth):
         x0, y0 = center
@@ -145,7 +145,7 @@ class SuperCat(object):
         for j in range(COLUMNS):
             if (self.board[:, j] == 1).all() or (self.board[:, j] == 2).all():
                 #self.draw_win_line(pos, self.playerCol)
-                print(self.board[0, j])
+                return self.board[0, j]
 
         #arc
         for i in range(ROWS):
@@ -168,7 +168,7 @@ class SuperCat(object):
 
         if self.board_full():
             return 'tie'
-        return False
+
 
 
     def check_win(self):
@@ -199,6 +199,7 @@ class SuperCat(object):
 
         return None
 
+
     def random_computer_move(self):
         rand_pos = (np.random.randint(0, 4), np.random.randint(0, 8))
 
@@ -210,3 +211,16 @@ class SuperCat(object):
 
         else:
             self.random_computer_move()
+
+
+
+class TranspositionTable(object):
+
+    def __init__(self):
+        self.zobrist_table = np.zeros(2*4*8, dtype=np.int64)
+        self.init_table()
+
+    def init_table(self):
+        i64 = np.iinfo(np.int64)
+        for k in range(2*4*8):
+                    self.zobrist_table[k] = np.random.randint(i64.min, i64.max, dtype=np.int64)

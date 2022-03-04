@@ -9,7 +9,7 @@ if bot.mode == 'two players':
             if event.type == pg.QUIT:
                 sys.exit()
 
-            #print(bot.player)
+
 
             if event.type == pg.MOUSEBUTTONDOWN and not bot.game_over:
 
@@ -20,6 +20,7 @@ if bot.mode == 'two players':
                 if bot.is_spot_available(pos):
                     bot.update_board(pos, bot.player)
                     bot.draw_player_fig(bot.discrete_polar_to_cartesian(pos))
+
                     if bot.check_win():
                         bot.game_over = True
 
@@ -56,11 +57,10 @@ else:
 
                     bot.update_player()
 
-
                 if bot.player == 1:
-                    bot.aiPos = best_move()
-                    #bot.random_computer_move()
-                    bot.update_board(bot.aiPos, bot.player)
+                    #bot.aiPos = best_move()
+                    bot.random_computer_move()
+                    #bot.update_board(bot.aiPos, bot.player)
                     print(bot.aiPos)
                     cartesian_pos = bot.discrete_polar_to_cartesian(bot.aiPos)
                     bot.draw_player_fig(cartesian_pos)
